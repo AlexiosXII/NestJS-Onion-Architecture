@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
-import { ContextModule } from '../request-context.ts/context.module';
+import { RequestContextService } from '../context/app-request-context';
 
 @Module({
     imports: [
         WinstonModule.forRootAsync({
-            imports: [ContextModule],
             useFactory: () => ({
                 exitOnError: false,
                 levels: winston.config.syslog.levels,
@@ -22,7 +21,7 @@ import { ContextModule } from '../request-context.ts/context.module';
                             winston.format.timestamp(),
                             winston.format.printf(
                                 (info) =>
-                                    `${info.timestamp} ${info.label} [${info.level}]: ${info.message}`,
+                                    `[${info.timestamp}] [${RequestContextService.getRequestId()}] [${info.context}] [${info.level}]: ${info.message}`,
                             ),
                         ),
                     }),

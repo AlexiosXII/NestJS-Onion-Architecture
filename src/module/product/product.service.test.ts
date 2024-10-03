@@ -39,7 +39,7 @@ describe('ProductService', () => {
 
             // Assert
             expect(result).toEqual(expectedProduct);
-            expect(logger.info).toHaveBeenCalledWith(
+            expect(logger.log).toHaveBeenCalledWith(
                 `Execute ProductService.getProduct(${id})`,
             );
         });

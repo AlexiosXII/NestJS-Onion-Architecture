@@ -3,25 +3,19 @@ import {
     NestInterceptor,
     ExecutionContext,
     CallHandler,
-    Inject,
+    Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
-import * as httpContext from 'express-http-context';
-import { RequestContextKeys } from '../module/request-context.ts/context.enum';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
-import winston from 'winston';
+import { RequestContextService } from '../context/app-request-context';
 
 /**
  * Interceptor that handles the response of HTTP requests.
  */
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
-    constructor(
-        @Inject(WINSTON_MODULE_PROVIDER)
-        private readonly logger: winston.Logger,
-    ) {}
+    private readonly logger = new Logger(ResponseInterceptor.name);
 
     /**
      * Intercepts the response of an HTTP request.
@@ -39,17 +33,17 @@ export class ResponseInterceptor implements NestInterceptor {
                 if (result?.custom === true) {
                     return result.data;
                 }
-                const requestId = httpContext.get(
-                    RequestContextKeys.REQUEST_ID,
-                );
+                const requestId = RequestContextService.getRequestId();
                 const res = {
-                    requestId: requestId,
-                    statusCode: StatusCodes.OK,
-                    message: getReasonPhrase(StatusCodes.OK),
+                    meta: {
+                        requestId: requestId,
+                        statusCode: StatusCodes.OK,
+                        message: getReasonPhrase(StatusCodes.OK),
+                    },
                     data: result === undefined ? {} : result,
                 };
-                this.logger.info(`Time execute ${Date.now() - now}ms`);
-                this.logger.info(`Response ${JSON.stringify(res)}`);
+                this.logger.log(`Time execute ${Date.now() - now}ms`);
+                this.logger.log(`Response ${JSON.stringify(res)}`);
                 return res;
             }),
             catchError((error) => {

@@ -1,43 +1,55 @@
-import * as httpContext from 'express-http-context';
-import { RequestContextKeys } from '../module/request-context.ts/context.enum';
-
 /**
- * Decorator that adds method tracing functionality to a class method.
- * It logs the method call with arguments and request ID before invoking the original method,
- * and logs the method return value after the original method is executed.
- * @returns The decorated method.
+ * A decorator function that traces method calls within a class.
+ *
+ * This decorator logs the method name, arguments, and request ID when a method is called,
+ * and logs the return value of the method after it completes.
+ *
+ * @returns A class decorator function that wraps each method of the class with tracing logic.
+ *
+ * @throws Will throw an error if the class does not have a logger property.
+ *
+ * @example
+ * @MethodTracer()
+ * class MyClass {
+ *     myMethod(arg1: string, arg2: number) {
+ *         // method implementation
+ *     }
+ * }
  */
-export const MethodTracer =
-    () =>
-    (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-        const originalMethod = descriptor.value;
-        descriptor.value = function (...args: any[]) {
-            const requestId = httpContext.get(RequestContextKeys.REQUEST_ID);
-            const className = target.constructor.name;
-            if (!this.logger) {
-                throw new Error(
-                    `Using logger in @MethodTracer, please declare logger in class constructor [${className}]\nExample:\nconstructor(\n    @Inject(WINSTON_MODULE_PROVIDER)\n    private readonly logger: winston.Logger,\n) {}`,
-                );
+export function MethodTracer() {
+    return function (constructor: Function) {
+        for (const key of Object.getOwnPropertyNames(constructor.prototype)) {
+            const originalMethod = constructor.prototype[key];
+            if (typeof originalMethod === 'function' && key !== 'constructor') {
+                constructor.prototype[key] = function (...args: any[]) {
+                    const methodName = key;
+                    const className = constructor.name;
+                    if (!this.logger) {
+                        throw new Error(
+                            `Using logger in @MethodTracer, please declare logger in class constructor [${className}]\nExample:\nconstructor(\n    @Inject(WINSTON_MODULE_PROVIDER)\n    private readonly logger: winston.Logger,\n) {}`,
+                        );
+                    }
+                    const logger = this.logger;
+                    logger.log(
+                        `Calling [${className}.${methodName}] with arguments: ${JSON.stringify(
+                            args,
+                        )}`,
+                    );
+                    // Start tracer here
+                    // *
+                    // *
+                    const result = originalMethod.apply(this, args);
+                    logger.log(
+                        `[${className}.${methodName}] returned: ${JSON.stringify(
+                            result,
+                        )}`,
+                    );
+                    // End tracer here
+                    // *
+                    // *
+                    return result;
+                };
             }
-            const logger = this.logger;
-            logger.info(
-                `Calling method [${className}.${propertyKey}] with arguments: ${JSON.stringify(
-                    args,
-                )} and requestId: ${requestId}`,
-            );
-            // Start tracer here
-            // *
-            // *
-            const result = originalMethod.apply(this, args);
-            logger.info(
-                `Method ${className}.${propertyKey} returned: ${JSON.stringify(
-                    result,
-                )}`,
-            );
-            // End tracer here
-            // *
-            // *
-            return result;
-        };
-        return descriptor;
+        }
     };
+}
