@@ -29,9 +29,11 @@ export function MethodTracer() {
                             `Using logger in @MethodTracer, please declare logger in class constructor [${className}]\nExample:\nconstructor(\n    @Inject(WINSTON_MODULE_PROVIDER)\n    private readonly logger: winston.Logger,\n) {}`,
                         );
                     }
-                    const logger = this.logger;
-                    logger.log(
-                        `Calling [${className}.${methodName}] with arguments: ${JSON.stringify(
+                    this.logger.log(
+                        `[${className}.${methodName}] function called`,
+                    );
+                    this.logger.debug(
+                        `[${className}.${methodName}] function called with arguments: ${JSON.stringify(
                             args,
                         )}`,
                     );
@@ -39,7 +41,10 @@ export function MethodTracer() {
                     // *
                     // *
                     const result = originalMethod.apply(this, args);
-                    logger.log(
+                    this.logger.log(
+                        `[${className}.${methodName}] function ended`,
+                    );
+                    this.logger.debug(
                         `[${className}.${methodName}] returned: ${JSON.stringify(
                             result,
                         )}`,

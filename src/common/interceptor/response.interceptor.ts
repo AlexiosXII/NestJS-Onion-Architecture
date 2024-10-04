@@ -42,8 +42,8 @@ export class ResponseInterceptor implements NestInterceptor {
                     },
                     data: result === undefined ? {} : result,
                 };
-                this.logger.log(`Time execute ${Date.now() - now}ms`);
-                this.logger.log(`Response ${JSON.stringify(res)}`);
+                this.logger.debug(`Time execute ${Date.now() - now}ms`);
+                this.logger.debug(`Response ${JSON.stringify(res)}`);
                 return res;
             }),
             catchError((error) => {

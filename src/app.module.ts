@@ -2,6 +2,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { RequestContextModule } from 'nestjs-request-context';
 
 // Common
 import { ResponseInterceptor } from './common/interceptor/response.interceptor';
@@ -9,18 +10,12 @@ import { TimeoutInterceptor } from './common/interceptor/timeout.interceptor';
 import { ContextInterceptor } from './common/interceptor/context.interceptor';
 import { LoggerModule } from './common/logger/logger.module';
 
-// Controller
-import { ProductController } from './controller/product/product.controller';
-
 // Module
-import { ProductModule } from './module/product/product.module';
-import { RequestContextModule } from 'nestjs-request-context';
-// ======================================================================================
-//                                      readme
-//              Before add any constance, Please fill it in it's context.
+import { UserModule } from './api/user/user.module';
 
 @Module({
     imports: [
+        // global modules
         RequestContextModule,
         ThrottlerModule.forRoot([
             {
@@ -30,9 +25,9 @@ import { RequestContextModule } from 'nestjs-request-context';
         ]),
         LoggerModule,
 
-        ProductModule,
+        // application modules
+        UserModule,
     ],
-    controllers: [ProductController],
     providers: [
         {
             provide: APP_INTERCEPTOR,
