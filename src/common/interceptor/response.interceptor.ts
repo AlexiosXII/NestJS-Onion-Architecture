@@ -17,12 +17,6 @@ import { RequestContextService } from '../context/app-request-context';
 export class ResponseInterceptor implements NestInterceptor {
     private readonly logger = new Logger(ResponseInterceptor.name);
 
-    /**
-     * Intercepts the response of an HTTP request.
-     * @param context - The execution context of the request.
-     * @param next - The next call handler.
-     * @returns An observable of the response.
-     */
     intercept(
         context: ExecutionContext,
         next: CallHandler,

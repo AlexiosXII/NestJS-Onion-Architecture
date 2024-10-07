@@ -14,7 +14,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository designed in Onion Architecture.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository designed in [Onion Architecture](<(https://medium.com/expedia-group-tech/onion-architecture-deed8a554423)>).
 
 ## Installation
 

@@ -6,6 +6,11 @@
         "dbaeumer.vscode-eslint",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
-        "sonarsource.sonarlint-vscode"
+        "sonarsource.sonarlint-vscode",
+        "orta.vscode-jest",
+        "mgmcdermott.vscode-language-babel",
+        "streetsidesoftware.code-spell-checker",
+        "xabikos.javascriptsnippets",
+        "ms-vscode.vscode-typescript-next"
     ]
 }

@@ -1,3 +1,4 @@
+import { sanitizeArgs } from '../../helper/sensitive-data/sensitive-data.helper';
 /**
  * A decorator function that traces method calls within a class.
  *
@@ -16,6 +17,7 @@
  *     }
  * }
  */
+
 export function MethodTracer() {
     return function (constructor: Function) {
         for (const key of Object.getOwnPropertyNames(constructor.prototype)) {
@@ -26,15 +28,16 @@ export function MethodTracer() {
                     const className = constructor.name;
                     if (!this.logger) {
                         throw new Error(
-                            `Using logger in @MethodTracer, please declare logger in class constructor [${className}]\nExample:\nconstructor(\n    @Inject(WINSTON_MODULE_PROVIDER)\n    private readonly logger: winston.Logger,\n) {}`,
+                            `Using logger in @MethodTracer, please declare logger in class properties [${className}]\nExample:\nexport class ${className} {\n    private readonly logger = new Logger(${className}.name);\n    async functionName () => {},\n}`,
                         );
                     }
+                    const sanitizedArgs = sanitizeArgs(args);
                     this.logger.log(
                         `[${className}.${methodName}] function called`,
                     );
                     this.logger.debug(
                         `[${className}.${methodName}] function called with arguments: ${JSON.stringify(
-                            args,
+                            sanitizedArgs,
                         )}`,
                     );
                     // Start tracer here

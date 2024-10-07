@@ -11,7 +11,8 @@ import { ContextInterceptor } from './common/interceptor/context.interceptor';
 import { LoggerModule } from './common/logger/logger.module';
 
 // Module
-import { UserModule } from './api/user/user.module';
+import { UserModule } from './external/api/user/user.module';
+import { AuthModule } from './external/api/auth/auth.module';
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { UserModule } from './api/user/user.module';
 
         // application modules
         UserModule,
+        AuthModule,
     ],
     providers: [
         {
