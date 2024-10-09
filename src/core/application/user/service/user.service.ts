@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { User } from 'src/core/domain/user/entities/user.entity';
 import { UserRepository } from 'src/core/domain/user/repositories/user.repository.interface';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { MethodTracer } from 'src/common/decorator/method-tracer/method-tracer.decorator';
+import { MethodTracer } from 'src/common/decorators/method-tracer/method-tracer.decorator';
 
 /**
  * @class UserService
@@ -42,6 +42,7 @@ export class UserService {
      * @returns {Promise<User>} - The user with the specified ID.
      */
     async getUserById(id: number): Promise<User> {
-        return this.userRepository.findById(id);
+        const user = await this.userRepository.findById(id);
+        return user;
     }
 }

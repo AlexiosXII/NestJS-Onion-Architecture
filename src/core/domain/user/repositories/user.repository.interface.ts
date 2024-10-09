@@ -1,5 +1,6 @@
 import { User } from '../entities/user.entity';
 
+export const providerName = 'UserRepository';
 /**
  * Interface representing a repository for managing users.
  */

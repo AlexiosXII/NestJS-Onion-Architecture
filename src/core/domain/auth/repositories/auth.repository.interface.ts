@@ -1,5 +1,7 @@
 import { AuthUsernamePassword } from '../entities/auth.entity';
 
+export const providerName = 'AuthRepository';
+
 /**
  * Interface representing the authentication repository.
  */

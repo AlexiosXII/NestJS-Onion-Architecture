@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { AuthRepository } from 'src/core/domain/auth/repositories/auth.repository.interface';
 import { LoginUsernameDto } from '../dto/login-username.dto';
-import { MethodTracer } from 'src/common/decorator/method-tracer/method-tracer.decorator';
+import { MethodTracer } from 'src/common/decorators/method-tracer/method-tracer.decorator';
 import { UserRepository } from 'src/core/domain/user/repositories/user.repository.interface';
 
 /**
@@ -37,14 +37,16 @@ export class AuthService {
      * @throws {Error} - Throws an error if the credentials are invalid.
      */
     async loginUsername(auth: LoginUsernameDto): Promise<string> {
-        const user = await this.userRepository.findById(1); // Example usage of user repository
-        const success = await this.authRepository.loginUsername({
-            username: auth.username,
-            password: auth.password,
-        });
-        if (!success) {
+        const user = await this.userRepository.findById(1);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const loginResult = await this.authRepository.loginUsername(auth);
+        if (!loginResult) {
             throw new Error('Invalid credentials');
         }
+
         return this.signToken(auth.username);
     }
 

@@ -5,9 +5,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { RequestContextModule } from 'nestjs-request-context';
 
 // Common
-import { ResponseInterceptor } from './common/interceptor/response.interceptor';
-import { TimeoutInterceptor } from './common/interceptor/timeout.interceptor';
-import { ContextInterceptor } from './common/interceptor/context.interceptor';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
+import { ContextInterceptor } from './common/interceptors/context.interceptor';
 import { LoggerModule } from './common/logger/logger.module';
 
 // Module

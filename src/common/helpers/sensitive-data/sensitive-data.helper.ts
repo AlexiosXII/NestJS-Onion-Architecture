@@ -1,7 +1,4 @@
-/**
- * An array of property names that are considered sensitive and should be masked.
- */
-export const sensitiveProperties = ['password'];
+import { sensitiveProperties } from 'src/common/config/sensitive-properties.config';
 
 /**
  * Sanitizes a given string by trimming whitespace and removing all non-alphanumeric characters.

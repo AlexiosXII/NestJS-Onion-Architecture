@@ -20,7 +20,9 @@ export class ContextInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
         const requestId = request?.headers?.requestid || uuidv4();
+        const lang = request?.headers?.lang || 'en';
         RequestContextService.setRequestId(requestId);
+        RequestContextService.setLang(lang);
         return next.handle().pipe(
             tap(() => {
                 // Perform cleaning if needed

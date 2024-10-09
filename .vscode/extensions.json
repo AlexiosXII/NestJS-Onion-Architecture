@@ -11,6 +11,7 @@
         "mgmcdermott.vscode-language-babel",
         "streetsidesoftware.code-spell-checker",
         "xabikos.javascriptsnippets",
-        "ms-vscode.vscode-typescript-next"
+        "ms-vscode.vscode-typescript-next",
+        "ryanluker.vscode-coverage-gutters"
     ]
 }
