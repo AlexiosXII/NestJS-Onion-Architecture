@@ -1,12 +1,16 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { AuthRepository } from 'src/core/domain/auth/repositories/auth.repository.interface';
+import {
+    AuthRepository,
+    providerName as authProviderName,
+} from 'src/core/domain/auth/repositories/auth.repository.interface';
+import {
+    UserRepository,
+    providerName as userProviderName,
+} from 'src/core/domain/user/repositories/user.repository.interface';
 import { LoginUsernameDto } from '../dto/login-username.dto';
 import { MethodTracer } from 'src/common/decorators/method-tracer/method-tracer.decorator';
-import { UserRepository } from 'src/core/domain/user/repositories/user.repository.interface';
 import { ApplicationError } from 'src/common/errors/application.error';
 import { AuthError } from 'src/core/domain/auth/errors/auth.error';
-import { providerName as authProviderName } from 'src/core/domain/auth/repositories/auth.repository.interface';
-import { providerName as userProviderName } from 'src/core/domain/user/repositories/user.repository.interface';
 
 /**
  * Service responsible for handling authentication-related operations.
