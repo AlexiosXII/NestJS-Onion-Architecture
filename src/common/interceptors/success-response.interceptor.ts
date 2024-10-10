@@ -29,22 +29,14 @@ export class SuccessResponseInterceptor implements NestInterceptor {
                 }
                 const requestId = RequestContextService.getRequestId();
                 const res = {
-                    meta: {
-                        requestId: requestId,
-                        statusCode: StatusCodes.OK,
-                        message: getReasonPhrase(StatusCodes.OK),
-                    },
+                    requestId: requestId,
+                    status: 'success',
+                    message: 'Operation completed successfully',
                     data: result === undefined ? {} : result,
                 };
                 this.logger.debug(`Time execute ${Date.now() - now}ms`);
                 this.logger.debug(`Response ${JSON.stringify(res)}`);
                 return res;
-            }),
-            catchError((error) => {
-                if (!error?.response?.error) {
-                    this.logger.error('UNEXPECTED ERROR => ', error, '\n');
-                }
-                throw error;
             }),
         );
     }
