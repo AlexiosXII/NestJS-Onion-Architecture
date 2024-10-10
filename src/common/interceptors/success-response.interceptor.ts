@@ -1,7 +1,6 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { StatusCodes, getReasonPhrase } from 'http-status-codes';
+import { map } from 'rxjs/operators';
 import { RequestContextService } from '../context/app-request-context';
 
 /**

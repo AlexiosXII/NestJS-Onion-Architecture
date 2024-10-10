@@ -35,7 +35,7 @@ describe('AuthService', () => {
     });
 
     describe('loginUsername', () => {
-        const loginDto: LoginUsernameDto = { username: 'testuser', password: 'password123' };
+        const loginDto: LoginUsernameDto = { username: 'testuser', password: 'password123' }; // cSpell:disable-line
         const mockUser = new User(1, 'Test User', 'test@example.com');
 
         it('should successfully login and return a signed token', async () => {
@@ -80,7 +80,7 @@ describe('AuthService', () => {
 
     describe('signToken', () => {
         it('should call authRepository.signToken with the provided username', async () => {
-            const username = 'testuser';
+            const username = 'testuser'; // cSpell:disable-line
             const mockToken = 'mocked_signed_token';
             authRepository.signToken.mockResolvedValue(mockToken);
 
