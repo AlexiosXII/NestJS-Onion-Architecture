@@ -3,6 +3,8 @@ import { AuthRepository } from 'src/core/domain/auth/repositories/auth.repositor
 import { LoginUsernameDto } from '../dto/login-username.dto';
 import { MethodTracer } from 'src/common/decorators/method-tracer/method-tracer.decorator';
 import { UserRepository } from 'src/core/domain/user/repositories/user.repository.interface';
+import { ApplicationError } from 'src/common/errors/application.error';
+import { AuthError } from 'src/core/domain/auth/errors/auth.error';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -39,12 +41,12 @@ export class AuthService {
     async loginUsername(auth: LoginUsernameDto): Promise<string> {
         const user = await this.userRepository.findById(1);
         if (!user) {
-            throw new Error('User not found');
+            throw new ApplicationError(AuthError.USER_NOT_FOUND);
         }
 
         const loginResult = await this.authRepository.loginUsername(auth);
         if (!loginResult) {
-            throw new Error('Invalid credentials');
+            throw new ApplicationError(AuthError.INVALID_CREDENTIALS);
         }
 
         return this.signToken(auth.username);

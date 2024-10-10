@@ -19,8 +19,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class ContextInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-        const requestId = request?.headers?.requestid || uuidv4();
-        const lang = request?.headers?.lang || 'en';
+        const requestId = request?.headers['requestid'] || uuidv4();
+        const lang = request?.headers['x-lang'] || 'en';
         RequestContextService.setRequestId(requestId);
         RequestContextService.setLang(lang);
         return next.handle().pipe(

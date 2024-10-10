@@ -7,9 +7,9 @@ import helmet from 'helmet';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    // if (process.env.NODE_ENV !== 'local') {
-    app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
-    // }
+    if (process.env.NODE_ENV !== 'local') {
+        app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+    }
     app.use(helmet());
     app.enableCors();
     app.enableShutdownHooks();

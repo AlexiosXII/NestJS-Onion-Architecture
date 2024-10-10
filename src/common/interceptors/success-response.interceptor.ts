@@ -14,8 +14,8 @@ import { RequestContextService } from '../context/app-request-context';
  * Interceptor that handles the response of HTTP requests.
  */
 @Injectable()
-export class ResponseInterceptor implements NestInterceptor {
-    private readonly logger = new Logger(ResponseInterceptor.name);
+export class SuccessResponseInterceptor implements NestInterceptor {
+    private readonly logger = new Logger(SuccessResponseInterceptor.name);
 
     intercept(
         context: ExecutionContext,
