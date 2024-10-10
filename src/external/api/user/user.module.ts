@@ -5,9 +5,6 @@ import { UserRepositoryImpl } from 'src/external/infrastructure/database/reposit
 import { providerName as userProviderName } from 'src/core/domain/user/repositories/user.repository.interface';
 @Module({
     controllers: [UserController],
-    providers: [
-        UserService,
-        { provide: userProviderName, useClass: UserRepositoryImpl },
-    ],
+    providers: [UserService, { provide: userProviderName, useClass: UserRepositoryImpl }],
 })
 export class UserModule {}

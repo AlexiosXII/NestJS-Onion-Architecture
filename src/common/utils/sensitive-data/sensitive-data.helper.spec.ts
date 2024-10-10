@@ -1,8 +1,4 @@
-import {
-    maskSensitiveData,
-    sanitizeArgs,
-    sanitizeString,
-} from './sensitive-data.helper';
+import { maskSensitiveData, sanitizeArgs, sanitizeString } from './sensitive-data.helper';
 
 describe('sanitizeString', () => {
     it('should remove non-alphanumeric characters and trim whitespace', () => {
@@ -53,10 +49,7 @@ describe('sanitizeArgs', () => {
     });
 
     it('should handle mixed arrays and objects', () => {
-        const input = [
-            { username: 'user1', password: 'secret' },
-            '  hello!@#  ',
-        ];
+        const input = [{ username: 'user1', password: 'secret' }, '  hello!@#  '];
         const expected = [{ username: 'user1', password: '********' }, 'hello'];
         expect(sanitizeArgs(input)).toEqual(expected);
     });

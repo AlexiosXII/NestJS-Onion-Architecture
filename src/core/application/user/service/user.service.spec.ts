@@ -32,18 +32,12 @@ describe('UserService', () => {
                 name: 'John Doe',
                 email: 'john.doe@example.com',
             };
-            const user = new User(
-                Date.now(),
-                createUserDto.name,
-                createUserDto.email,
-            );
+            const user = new User(Date.now(), createUserDto.name, createUserDto.email);
 
             jest.spyOn(userRepository, 'create').mockResolvedValue(user);
 
             expect(await userService.createUser(createUserDto)).toEqual(user);
-            expect(userRepository.create).toHaveBeenCalledWith(
-                expect.any(User),
-            );
+            expect(userRepository.create).toHaveBeenCalledWith(expect.any(User));
         });
     });
 

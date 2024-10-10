@@ -3,6 +3,8 @@ import { AuthService } from '../auth.service';
 import { AuthRepository } from 'src/core/domain/auth/repositories/auth.repository.interface';
 import { UserRepository } from 'src/core/domain/user/repositories/user.repository.interface';
 import { LoginUsernameDto } from '../../dto/login-username.dto';
+import { User } from 'src/core/domain/user/entities/user.entity';
+import { AuthError } from 'src/core/domain/auth/errors/auth.error';
 
 describe('AuthService', () => {
     let authService: AuthService;
@@ -32,90 +34,60 @@ describe('AuthService', () => {
         userRepository = module.get('UserRepository');
     });
 
-    it('should be defined', () => {
-        expect(authService).toBeDefined();
-    });
-
     describe('loginUsername', () => {
-        it('should return a signed token when login is successful', async () => {
-            const loginDto: LoginUsernameDto = {
-                username: 'testuser', // cspell:disable-line
-                password: 'password123',
-            };
-            const mockUser = {
-                id: 1,
-                username: 'testuser', // cspell:disable-line
-                name: 'Test User',
-                email: 'testuser@example.com',
-            };
-            const mockToken = 'mock.signed.token';
+        const loginDto: LoginUsernameDto = { username: 'testuser', password: 'password123' };
+        const mockUser = new User(1, 'Test User', 'test@example.com');
 
+        it('should successfully login and return a signed token', async () => {
             userRepository.findById.mockResolvedValue(mockUser);
             authRepository.loginUsername.mockResolvedValue(true);
-            authRepository.signToken.mockResolvedValue(mockToken);
+            authRepository.signToken.mockResolvedValue('signed_token');
 
             const result = await authService.loginUsername(loginDto);
 
+            expect(result).toBe('signed_token');
             expect(userRepository.findById).toHaveBeenCalledWith(1);
-            expect(authRepository.loginUsername).toHaveBeenCalledWith({
-                username: loginDto.username,
-                password: loginDto.password,
-            });
-            expect(authRepository.signToken).toHaveBeenCalledWith(
-                loginDto.username,
-            );
-            expect(result).toBe(mockToken);
+            expect(authRepository.loginUsername).toHaveBeenCalledWith(loginDto);
+            expect(authRepository.signToken).toHaveBeenCalledWith(loginDto.username);
         });
 
-        it('should throw an error when login fails', async () => {
-            const loginDto: LoginUsernameDto = {
-                username: 'testuser', // cspell:disable-line
-                password: 'wrongpassword', // cspell:disable-line
-            };
-            const mockUser = {
-                id: 1,
-                username: 'testuser', // cspell:disable-line
-                name: 'Test User',
-                email: 'testuser@example.com',
-            };
+        it('should throw USER_NOT_FOUND error if user is not found', async () => {
+            userRepository.findById.mockResolvedValue(null);
 
+            await expect(authService.loginUsername(loginDto)).rejects.toThrow(
+                expect.objectContaining({
+                    code: AuthError.USER_NOT_FOUND,
+                }),
+            );
+            expect(userRepository.findById).toHaveBeenCalledWith(1);
+            expect(authRepository.loginUsername).not.toHaveBeenCalled();
+        });
+
+        it('should throw INVALID_CREDENTIALS error if login fails', async () => {
             userRepository.findById.mockResolvedValue(mockUser);
             authRepository.loginUsername.mockResolvedValue(false);
 
             await expect(authService.loginUsername(loginDto)).rejects.toThrow(
-                'Invalid credentials',
+                expect.objectContaining({
+                    code: AuthError.INVALID_CREDENTIALS,
+                }),
             );
-        });
-
-        it('should throw an error when user is not found', async () => {
-            const loginDto: LoginUsernameDto = {
-                username: 'nonexistentuser', // cspell:disable-line
-                password: 'password123',
-            };
-
-            userRepository.findById.mockResolvedValue(null);
-
-            await expect(authService.loginUsername(loginDto)).rejects.toThrow(
-                'User not found',
-            );
-
             expect(userRepository.findById).toHaveBeenCalledWith(1);
-            expect(authRepository.loginUsername).not.toHaveBeenCalled();
+            expect(authRepository.loginUsername).toHaveBeenCalledWith(loginDto);
             expect(authRepository.signToken).not.toHaveBeenCalled();
         });
     });
 
     describe('signToken', () => {
         it('should call authRepository.signToken with the provided username', async () => {
-            const username = 'testuser'; // cspell:disable-line
-            const mockToken = 'mock.signed.token';
-
+            const username = 'testuser';
+            const mockToken = 'mocked_signed_token';
             authRepository.signToken.mockResolvedValue(mockToken);
 
             const result = await authService.signToken(username);
 
-            expect(authRepository.signToken).toHaveBeenCalledWith(username);
             expect(result).toBe(mockToken);
+            expect(authRepository.signToken).toHaveBeenCalledWith(username);
         });
     });
 });

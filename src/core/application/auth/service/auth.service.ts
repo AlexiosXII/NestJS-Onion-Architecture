@@ -36,7 +36,7 @@ export class AuthService {
      *
      * @param {LoginUsernameDto} auth - The login credentials.
      * @returns {Promise<string>} - A promise that resolves to a signed token if login is successful.
-     * @throws {Error} - Throws an error if the credentials are invalid.
+     * @throws {ApplicationError} - Throws an error if the credentials are invalid.
      */
     async loginUsername(auth: LoginUsernameDto): Promise<string> {
         const user = await this.userRepository.findById(1);

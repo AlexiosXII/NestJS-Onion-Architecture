@@ -30,18 +30,12 @@ describe('MethodTracer Decorator', () => {
         const arg2 = 123;
         const result = testInstance.method1(arg1, arg2);
 
-        expect(testInstance.logger.log).toHaveBeenCalledWith(
-            '[TestClass.method1] function called',
-        );
+        expect(testInstance.logger.log).toHaveBeenCalledWith('[TestClass.method1] function called');
         expect(testInstance.logger.debug).toHaveBeenCalledWith(
             `[TestClass.method1] function called with arguments: ["${arg1}",${arg2}]`,
         );
-        expect(testInstance.logger.log).toHaveBeenCalledWith(
-            '[TestClass.method1] function ended',
-        );
-        expect(testInstance.logger.debug).toHaveBeenCalledWith(
-            `[TestClass.method1] returned: "${arg1} ${arg2}"`,
-        );
+        expect(testInstance.logger.log).toHaveBeenCalledWith('[TestClass.method1] function ended');
+        expect(testInstance.logger.debug).toHaveBeenCalledWith(`[TestClass.method1] returned: "${arg1} ${arg2}"`);
         expect(result).toBe(`${arg1} ${arg2}`);
     });
 
@@ -49,18 +43,12 @@ describe('MethodTracer Decorator', () => {
         const arg1 = 'hello';
         const result = testInstance.method2(arg1);
 
-        expect(testInstance.logger.log).toHaveBeenCalledWith(
-            '[TestClass.method2] function called',
-        );
+        expect(testInstance.logger.log).toHaveBeenCalledWith('[TestClass.method2] function called');
         expect(testInstance.logger.debug).toHaveBeenCalledWith(
             `[TestClass.method2] function called with arguments: ["${arg1}"]`,
         );
-        expect(testInstance.logger.log).toHaveBeenCalledWith(
-            '[TestClass.method2] function ended',
-        );
-        expect(testInstance.logger.debug).toHaveBeenCalledWith(
-            `[TestClass.method2] returned: "${arg1.toUpperCase()}"`,
-        );
+        expect(testInstance.logger.log).toHaveBeenCalledWith('[TestClass.method2] function ended');
+        expect(testInstance.logger.debug).toHaveBeenCalledWith(`[TestClass.method2] returned: "${arg1.toUpperCase()}"`);
         expect(result).toBe(arg1.toUpperCase());
     });
 

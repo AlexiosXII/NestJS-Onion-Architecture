@@ -1,10 +1,4 @@
-import {
-    Injectable,
-    NestInterceptor,
-    ExecutionContext,
-    CallHandler,
-    Logger,
-} from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
@@ -17,10 +11,7 @@ import { RequestContextService } from '../context/app-request-context';
 export class SuccessResponseInterceptor implements NestInterceptor {
     private readonly logger = new Logger(SuccessResponseInterceptor.name);
 
-    intercept(
-        context: ExecutionContext,
-        next: CallHandler,
-    ): Observable<unknown> {
+    intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
         const now = Date.now();
         return next.handle().pipe(
             map((result) => {

@@ -31,11 +31,7 @@ describe('AuthController', () => {
         };
         authService.loginUsername.mockResolvedValue('token');
 
-        return request(app.getHttpServer())
-            .post('/authentications')
-            .send(loginDto)
-            .expect(201)
-            .expect('token');
+        return request(app.getHttpServer()).post('/authentications').send(loginDto).expect(201).expect('token');
     });
 
     afterAll(async () => {

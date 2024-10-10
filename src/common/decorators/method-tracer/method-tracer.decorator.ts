@@ -32,26 +32,16 @@ export function MethodTracer() {
                         );
                     }
                     const sanitizedArgs = sanitizeArgs(args);
-                    this.logger.log(
-                        `[${className}.${methodName}] function called`,
-                    );
+                    this.logger.log(`[${className}.${methodName}] function called`);
                     this.logger.debug(
-                        `[${className}.${methodName}] function called with arguments: ${JSON.stringify(
-                            sanitizedArgs,
-                        )}`,
+                        `[${className}.${methodName}] function called with arguments: ${JSON.stringify(sanitizedArgs)}`,
                     );
                     // Start tracer here
                     // *
                     // *
                     const result = originalMethod.apply(this, args);
-                    this.logger.log(
-                        `[${className}.${methodName}] function ended`,
-                    );
-                    this.logger.debug(
-                        `[${className}.${methodName}] returned: ${JSON.stringify(
-                            result,
-                        )}`,
-                    );
+                    this.logger.log(`[${className}.${methodName}] function ended`);
+                    this.logger.debug(`[${className}.${methodName}] returned: ${JSON.stringify(result)}`);
                     // End tracer here
                     // *
                     // *
