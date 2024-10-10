@@ -8,7 +8,9 @@ import { RequestContextService } from '../context/app-request-context';
         WinstonModule.forRootAsync({
             useFactory: () => ({
                 exitOnError: false,
-                levels: winston.config.syslog.levels,
+                // Use npm log levels instead of syslog levels
+                levels: winston.config.npm.levels,
+                level: 'debug', // Set the minimum log level to debug
                 format: winston.format.combine(
                     winston.format.label({ label: 'main' }),
                     winston.format.timestamp(),
@@ -16,6 +18,7 @@ import { RequestContextService } from '../context/app-request-context';
                 ),
                 transports: [
                     new winston.transports.Console({
+                        level: 'debug', // Set console transport to log debug messages
                         format: winston.format.combine(
                             winston.format.label({ label: 'main' }),
                             winston.format.timestamp(),

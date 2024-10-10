@@ -17,7 +17,7 @@ export class RequestContextService {
     }
 
     static getRequestId(): string {
-        return this.getContext()?.lang;
+        return this.getContext()?.requestId;
     }
 
     static setLang(lang: string): void {
