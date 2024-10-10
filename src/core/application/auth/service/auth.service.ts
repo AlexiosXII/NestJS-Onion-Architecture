@@ -5,6 +5,8 @@ import { MethodTracer } from 'src/common/decorators/method-tracer/method-tracer.
 import { UserRepository } from 'src/core/domain/user/repositories/user.repository.interface';
 import { ApplicationError } from 'src/common/errors/application.error';
 import { AuthError } from 'src/core/domain/auth/errors/auth.error';
+import { providerName as authProviderName } from 'src/core/domain/auth/repositories/auth.repository.interface';
+import { providerName as userProviderName } from 'src/core/domain/user/repositories/user.repository.interface';
 
 /**
  * Service responsible for handling authentication-related operations.
@@ -25,9 +27,9 @@ export class AuthService {
      * @param userRepository - The repository used for user operations.
      */
     constructor(
-        @Inject('AuthRepository')
+        @Inject(authProviderName)
         private readonly authRepository: AuthRepository,
-        @Inject('UserRepository')
+        @Inject(userProviderName)
         private readonly userRepository: UserRepository,
     ) {}
 

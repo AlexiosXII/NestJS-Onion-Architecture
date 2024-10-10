@@ -1,4 +1,4 @@
-import { sanitizeArgs } from '../../helpers/sensitive-data/sensitive-data.helper';
+import { sanitizeArgs } from 'src/common/utils/sensitive-data/sensitive-data.helper';
 /**
  * A decorator function that traces method calls within a class.
  *
