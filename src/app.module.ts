@@ -3,7 +3,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core'; // Add APP_FILTER
 import { ThrottlerModule } from '@nestjs/throttler';
 import { RequestContextModule } from 'nestjs-request-context';
-import { I18nMiddleware, I18nModule } from 'nestjs-i18n';
+import { I18nMiddleware, I18nModule, HeaderResolver, AcceptLanguageResolver, QueryResolver } from 'nestjs-i18n';
 import { join } from 'path';
 
 // Common
@@ -36,6 +36,11 @@ import { AuthModule } from './external/api/auth/auth.module';
                 path: join(__dirname, '/i18n/'),
                 watch: true,
             },
+            resolvers: [
+                { use: QueryResolver, options: ['lang'] },
+                AcceptLanguageResolver,
+                new HeaderResolver(['x-lang']),
+            ],
         }),
 
         // application modules
