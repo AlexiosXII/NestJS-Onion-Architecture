@@ -15,10 +15,24 @@ async function bootstrap() {
     app.enableShutdownHooks();
 
     const config = new DocumentBuilder()
-        .setTitle('REST example')
-        .setDescription('The REST API description')
-        .setVersion('1.0')
-        .addTag('REST')
+        .setTitle('NestJS Onion Architecture API')
+        .setDescription(
+            'A RESTful API built with NestJS following Onion Architecture principles. This API provides user management and authentication services.',
+        )
+        .setVersion('1.0.0')
+        .addTag('Authentication', 'Endpoints for user authentication')
+        .addTag('Users', 'Endpoints for user management')
+        .addBearerAuth(
+            {
+                type: 'http',
+                scheme: 'bearer',
+                bearerFormat: 'JWT',
+                name: 'JWT',
+                description: 'Enter JWT token',
+                in: 'header',
+            },
+            'JWT-auth',
+        )
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
